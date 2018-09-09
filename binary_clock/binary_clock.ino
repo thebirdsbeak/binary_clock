@@ -1,9 +1,32 @@
+/* 
+Binary Clock program based on the DS323 library
+
+Beerware by Craig McIntyre (thebirdsbeak.com)
+
+With grateful thanks to those responsible for the DS3231.h library.
+*/
+
+
+#include <Wire.h>
+#include "DS3231.h"
+RTClib RTC;
+DS3231 Clock;
+
+byte hr;
+byte mn;
+
+// byte set_hour = 4; // Uncomment to set time
+// byte set_min = 43; // Uncomment to set time
 
 const byte numMinPins = 6;
 const byte numHrPins = 4;
 byte minPins[] = {4, 5, 6, 7, 8, 9};
 byte hrPins[] = {10, 11, 12, 13};
+
 void setup() {
+
+//    Serial.begin(57600); // Uncomment for debugging
+    Wire.begin();
 
   for (int thisPin = 0; thisPin < numMinPins; thisPin++) {
     pinMode(minPins[thisPin], OUTPUT);
@@ -13,18 +36,42 @@ void setup() {
     pinMode(hrPins[thisPin], OUTPUT);
   }
 
+    Clock.setClockMode(true);  // set to 12h time (not 24h)
+//    Clock.setHour(set_hour); // Uncomment to set hour
+//    Clock.setMinute(set_min); //Uncomment to set minute
   
 }
 
 void loop() {
 
-  
+    DateTime now = RTC.now();
+    hr = now.hour(), DEC;
+    mn = now.minute(), DEC;
 
+//    Serial.print(hr); // Uncomment for debugging
+//    Serial.print(":"); // Uncomment for debugging
+//    Serial.println(mn); // Uncomment for debugging
+ 
+  for (byte i=0; i<numMinPins; i++) {
+    byte state = bitRead(mn, i);
+    digitalWrite(minPins[i], state);
+  }
   
-  byte num = 12;
-  for (byte i=0; i<numPins; i++) {
-    byte state = bitRead(num, i);
-    digitalWrite(pins[i], state);
+  for (byte i=0; i<numHrPins; i++) {
+    byte state = bitRead(hr, i);
+    digitalWrite(hrPins[i], state);
+  }
+
+    delay(500);
+
+  for (byte i=0; i<numHrPins; i++) {
+    digitalWrite(hrPins[i], LOW);
+  }
+
+    delay(500);
+
+  for (byte i=0; i<numHrPins; i++) {
+    byte state = bitRead(hr, i);
+    digitalWrite(hrPins[i], state);
   }
 }
-
