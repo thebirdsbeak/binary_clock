@@ -15,5 +15,4 @@ First install the DS3231 library. If you use a different version than I have, th
 After those steps, the leds should light up, representing in binary the current time in HHHH:MMMMM format.
 For example, 11.22am is 0111:010110 (with 1 representing a lit led).
 
-(Note image is out of date, due to fading effect requiring PWM)
 ![alt text](https://raw.githubusercontent.com/thebirdsbeak/binary_clock/master/rtc_poc.png)
