@@ -28,11 +28,11 @@ void setup() {
     Wire.begin();
 
     for (int thisPin = 0; thisPin < numMinPins; thisPin++) {
-    pinMode(minPins[thisPin], OUTPUT);
+      pinMode(minPins[thisPin], OUTPUT);
     }
 
     for (int thisPin = 0; thisPin < numHrPins; thisPin++) {
-    pinMode(hrPins[thisPin], OUTPUT);
+      pinMode(hrPins[thisPin], OUTPUT);
     }
 
     Clock.setClockMode(true);  // set to 12h time (not 24h)
